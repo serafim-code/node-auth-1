@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h1>Hello</h1>
+<h3>Register Form</h3>
+<form id="register-form" action="">
+    <input type="email" name="email">
+    <input type="password" name="password">
+    <button type="submit">Register</button>
+</form>
+
+<br>
+<hr>
+<br>
+
+<h3>Login Form</h3>
+<form id="login-form" action="">
+    <input type="email" name="email">
+    <input type="password" name="password">
+    <button type="submit">Authorize</button>
+</form>
+
+<br>
+<hr>
+<br>
+
+<button id="logout-button">Logout</button>
+
+<script>
+  const registerForm = document.getElementById('register-form');
+  registerForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+      const values = Object.values(registerForm).reduce((obj, field) => {
+        if (field.name) {
+          obj[field.name] = field.value;
+        }
+        return obj
+      }, {})
+      const res = await fetch('api/register', {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        }
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  })
+
+  // Login Form
+  const loginForm = document.getElementById('login-form');
+  loginForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    try {
+
+      const values = Object.values(loginForm).reduce((obj, field) => {
+        if (field.name) {
+          obj[field.name] = field.value;
+        }
+        return obj
+      }, {})
+      const res = await fetch('api/authorize', {
+        method: 'POST',
+        body: JSON.stringify(values),
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        }
+      });
+    } catch (e) {
+      console.error(e);
+    }
+  })
+
+  // Logout Button
+  const logoutButton = document.getElementById('logout-button');
+  logoutButton.addEventListener('click', async () => {
+    try {
+      const res = await fetch('api/logout', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json; charset=UTF-8'
+        }
+      });
+    } catch (e) {
+      console.error(e)
+    }
+  })
+</script>
+</body>
+</html>
